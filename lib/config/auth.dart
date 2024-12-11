@@ -1,9 +1,9 @@
-import 'package:vaniarestapi/app/models/user.dart';
+import 'package:vaniarestapi/app/models/customers.dart';
 
 Map<String, dynamic> authConfig = {
   'guards': {
     'default': {
-      'provider': User(),
+      'provider': Customers(),
     }
   }
 };
