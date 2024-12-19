@@ -15,7 +15,10 @@ class OrdersController extends Controller {
         ])
         .join('customers', 'customers.id', '=', 'orders.cust_id')
         .get();
-    return Response.json({'data': orders});
+    return Response.json({
+      'message': 'Daftar order',
+      'data': orders
+    });
   }
   // fetch order by id
   Future<Response> show(int id) async {
@@ -31,7 +34,10 @@ class OrdersController extends Controller {
         .join('customers', 'customers.id', '=', 'orders.cust_id')
         .where('orders.id', '=', id)
         .first();
-    return Response.json({'data': order});
+    return Response.json({
+      'message': 'Detail order',
+      'data': order
+    });
   }
   // create new order
   Future<Response> create(Request request) async {
@@ -48,9 +54,14 @@ class OrdersController extends Controller {
       'order_date': request.input('order_date'),
     });
 
-    return Response.json({'message': 'Order created successfully'});
+    return Response.json({
+      'message': 'Order berhasil dibuat',
+      'data': {
+        'cust_id': request.input('cust_id'),
+        'order_date': request.input('order_date'),
+      }
+    });
   }
-
   // update order
   Future<Response> update(Request request, int id) async {
     request.validate({
@@ -66,14 +77,23 @@ class OrdersController extends Controller {
       'order_date': request.input('order_date'),
     });
 
-    return Response.json({'message': 'Order updated successfully'});
+    return Response.json({
+      'message': 'Order berhasil diupdate',
+      'data': {
+        'cust_id': request.input('cust_id'),
+        'order_date': request.input('order_date'),
+      }
+    });
   }
 
   // delete order
   Future<Response> destroy(int id) async {
     await Orders().query().where('id', '=', id).delete();
 
-    return Response.json({'message': 'Order deleted successfully'});
+    return Response.json({
+      'message': 'Order berhasil dihapus',
+      'data': {'id': id}
+    });
   }
 }
 

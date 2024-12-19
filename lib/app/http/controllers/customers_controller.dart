@@ -5,14 +5,17 @@ class CustomersController extends Controller {
   // fetch all customers
   Future<Response> index() async {
     List<Map<String, dynamic>> customers = await Customers().query().get();
-    return Response.json({'data': customers});
+    return Response.json({'message': 'Daftar customer', 'data': customers});
   }
+
   // fetch customer by id
   Future<Response> show(Request request, int id) async {
     print(id);
-    Map<String, dynamic>? customer = await Customers().query().where('id', '=', id).first();
+    Map<String, dynamic>? customer =
+        await Customers().query().where('id', '=', id).first();
     return Response.json({'data': customer});
   }
+
   // create new customer
   Future<Response> create(Request request) async {
     request.validate({
@@ -46,8 +49,20 @@ class CustomersController extends Controller {
       'cust_country': request.input('cust_country'),
     });
 
-    return Response.json({'message': 'Customer created successfully'});
+    return Response.json({
+      'message': 'Customer berhasil ditambahkan',
+      'data': {
+        'cust_name': request.input('cust_name'),
+        'cust_telp': request.input('cust_telp'),
+        'cust_address': request.input('cust_address'),
+        'cust_city': request.input('cust_city'),
+        'cust_state': request.input('cust_state'),
+        'cust_zip': request.input('cust_zip'),
+        'cust_country': request.input('cust_country'),
+      }
+    });
   }
+
   // update customer
   Future<Response> update(Request request, int id) async {
     request.validate({
@@ -81,12 +96,27 @@ class CustomersController extends Controller {
       'cust_country': request.input('cust_country'),
     });
 
-    return Response.json({'message': 'Customer updated successfully'});
+    return Response.json({
+      'message': 'Customer berhasil diupdate',
+      'data': {
+        'cust_name': request.input('cust_name'),
+        'cust_telp': request.input('cust_telp'),
+        'cust_address': request.input('cust_address'),
+        'cust_city': request.input('cust_city'),
+        'cust_state': request.input('cust_state'),
+        'cust_zip': request.input('cust_zip'),
+        'cust_country': request.input('cust_country'),
+      }
+    });
   }
+
   // delete customer
   Future<Response> destroy(int id) async {
     await Customers().query().where('id', '=', id).delete();
-    return Response.json({});
+    return Response.json({
+      'message': 'Customer berhasil dihapus',
+      'data': {'id': id}
+    });
   }
 }
 

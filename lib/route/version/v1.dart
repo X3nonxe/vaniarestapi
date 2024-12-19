@@ -15,7 +15,6 @@ class Version1 extends Route {
 
     /// Authentication Routes
     Router.post('/login', authController.login);
-    Router.post('/sign-up', authController.signUp);
     Router.post('/refresh-token', authController.refreshToken);
 
     Router.get('/wrong-request', () => Response.json({
@@ -28,7 +27,7 @@ class Version1 extends Route {
         Router.get('/details', customersController.index);
         Router.get('/details/{id}', customersController.show);
         Router.post('/create', customersController.create);
-        Router.patch('/update{id}', customersController.update);
+        Router.patch('/update/{id}', customersController.update);
         Router.delete('/delete/{id}', customersController.destroy);
       },
       prefix: 'customer',
@@ -43,7 +42,7 @@ class Version1 extends Route {
         Router.delete('/delete/{id}', ordersController.destroy);
       },
       prefix: 'order',
-      // middleware: [AuthenticateMiddleware()],
+      middleware: [AuthenticateMiddleware()],
     );
     // productnote routes
     Router.group(
@@ -67,18 +66,19 @@ class Version1 extends Route {
         Router.delete('/delete/{id}', productsController.destroy);
       },
       prefix: 'product',
-      // middleware: [AuthenticateMiddleware()],
+      middleware: [AuthenticateMiddleware()],
     );
     // vendor routes
     Router.group(
       () {
         Router.get('/details', vendorsController.index);
+        Router.get('/details/{id}', vendorsController.show);
         Router.post('/create', vendorsController.create);
         Router.patch('/update/{id}', vendorsController.update);
         Router.delete('/delete/{id}', vendorsController.destroy);
       },
       prefix: 'vendor',
-      // middleware: [AuthenticateMiddleware()],
+      middleware: [AuthenticateMiddleware()],
     );
   }
 }

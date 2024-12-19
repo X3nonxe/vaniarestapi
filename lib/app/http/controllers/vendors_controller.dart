@@ -5,14 +5,15 @@ class VendorsController extends Controller {
   // fetch all vendors
   Future<Response> index() async {
     List<Map<String, dynamic>> vendors = await Vendors().query().get();
-    return Response.json({'data': vendors});
+    return Response.json(
+        {'message': 'Daftar vendor', 'total': vendors.length, 'data': vendors});
   }
 
   // fetch single vendor
   Future<Response> show(int id) async {
     Map<String, dynamic>? vendor =
         await Vendors().query().where('id', '=', id).first();
-    return Response.json({'data': vendor});
+    return Response.json({'message': 'Detail vendor', 'data': vendor});
   }
 
   // create new vendor
@@ -20,7 +21,7 @@ class VendorsController extends Controller {
     request.validate({
       'vend_name': 'required|max_length:25|min_length:2',
       'vend_address': 'required',
-      'vend_city': 'required',
+      'vend_kota': 'required',
       'vend_state': 'required',
       'vend_zip': 'required',
       'vend_country': 'required',
@@ -29,7 +30,7 @@ class VendorsController extends Controller {
       'vend_name.max_length': 'The name is too long',
       'vend_name.min_length': 'The name is too short',
       'vend_address.required': 'The address is required',
-      'vend_city.required': 'The city is required',
+      'vend_kota.required': 'The city is required',
       'vend_state.required': 'The state is required',
       'vend_zip.required': 'The zip code is required',
       'vend_country.required': 'The country is required',
@@ -38,13 +39,23 @@ class VendorsController extends Controller {
     await Vendors().query().insert({
       'vend_name': request.input('vend_name'),
       'vend_address': request.input('vend_address'),
-      'vend_city': request.input('vend_city'),
+      'vend_kota': request.input('vend_kota'),
       'vend_state': request.input('vend_state'),
       'vend_zip': request.input('vend_zip'),
       'vend_country': request.input('vend_country'),
     });
 
-    return Response.json({'message': 'Vendor created successfully'});
+    return Response.json({
+      'message': 'Vendor berhasil dibuat',
+      'data': {
+        'vend_name': request.input('vend_name'),
+        'vend_address': request.input('vend_address'),
+        'vend_kota': request.input('vend_kota'),
+        'vend_state': request.input('vend_state'),
+        'vend_zip': request.input('vend_zip'),
+        'vend_country': request.input('vend_country'),
+      }
+    });
   }
 
   // update vendor
@@ -76,13 +87,26 @@ class VendorsController extends Controller {
       'vend_country': request.input('vend_country'),
     });
 
-    return Response.json({'message': 'Vendor updated successfully'});
+    return Response.json({
+      'message': 'Vendor berhasil diupdate',
+      'data': {
+        'vend_name': request.input('vend_name'),
+        'vend_address': request.input('vend_address'),
+        'vend_kota': request.input('vend_kota'),
+        'vend_state': request.input('vend_state'),
+        'vend_zip': request.input('vend_zip'),
+        'vend_country': request.input('vend_country'),
+      }
+    });
   }
 
   // delete vendor
   Future<Response> destroy(int id) async {
     await Vendors().query().where('id', '=', id).delete();
-    return Response.json({'message': 'Vendor deleted successfully'});
+    return Response.json({
+      'message': 'Vendor berhasil dihapus',
+      'data': {'id': id}
+    });
   }
 }
 

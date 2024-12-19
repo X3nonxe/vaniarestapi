@@ -15,7 +15,11 @@ class ProductnotesController extends Controller {
         .join('products', 'products.id', '=', 'productnotes.prod_id')
         .get();
 
-    return Response.json({'data': productnotes});
+    return Response.json({
+      'message': 'Daftar catatan produk',
+      'total': productnotes.length,
+      'data': productnotes
+    });
   }
 
   // fetch single productnotes
@@ -32,7 +36,8 @@ class ProductnotesController extends Controller {
         .where('productnotes.id', '=', id)
         .first();
 
-    return Response.json({'data': productnotes});
+    return Response.json(
+        {'message': 'Detail catatan produk', 'data': productnotes});
   }
 
   // create new productnotes
@@ -53,7 +58,10 @@ class ProductnotesController extends Controller {
       'note_text': request.input('note_text'),
     });
 
-    return Response.json({'message': 'Productnotes created successfully'});
+    return Response.json({
+      'message': 'Productnotes berhasil ditambahkan',
+      'data': request.body,
+    });
   }
 
   // update productnotes
@@ -74,13 +82,19 @@ class ProductnotesController extends Controller {
       'note_text': request.input('note_text'),
     });
 
-    return Response.json({'message': 'Productnotes updated successfully'});
+    return Response.json({
+      'message': 'Productnotes updated successfully',
+      'data': request.body,
+    });
   }
 
   // delete productnotes
   Future<Response> destroy(int id) async {
     await Productnotes().query().where('id', '=', id).delete();
-    return Response.json({'message': 'Productnotes deleted successfully'});
+    return Response.json({
+      'message': 'Productnotes berhasil dihapus',
+      'data': {'id': id},
+    });
   }
 }
 

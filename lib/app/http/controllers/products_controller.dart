@@ -17,7 +17,11 @@ class ProductsController extends Controller {
         .join('vendors', 'vendors.id', '=', 'products.vend_id')
         .get();
 
-    return Response.json({'data': products});
+    return Response.json({
+      'message': 'Daftar produk',
+      'total': products.length,
+      'data': products
+    });
   }
 
   // fetch single product
@@ -36,7 +40,7 @@ class ProductsController extends Controller {
         .where('products.id', '=', id)
         .first();
 
-    return Response.json({'data': product});
+    return Response.json({'message': 'Detail produk', 'data': product});
   }
 
   // create new product
@@ -62,7 +66,10 @@ class ProductsController extends Controller {
       'vend_id': request.input('vend_id'),
     });
 
-    return Response.json({'message': 'Product created successfully'});
+    return Response.json({
+      'message': 'Product berhasil dibuat',
+      'data': request.body,
+    });
   }
 
   // update product
@@ -88,14 +95,20 @@ class ProductsController extends Controller {
       'vend_id': request.input('vend_id'),
     });
 
-    return Response.json({'message': 'Product updated successfully'});
+    return Response.json({
+      'message': 'Product berhasil diupdate',
+      'data': request.body,
+    });
   }
 
   // delete product
   Future<Response> destroy(int id) async {
     await Products().query().where('id', '=', id).delete();
 
-    return Response.json({'message': 'Product deleted successfully'});
+    return Response.json({
+      'message': 'Product berhasil dihapus',
+      'data': {'id': id},
+    });
   }
 }
 
